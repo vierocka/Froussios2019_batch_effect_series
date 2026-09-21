@@ -1,5 +1,8 @@
 # Froussios et al. 2019 – batch-effect series
 
+Purpose. 
+This repository is not a critique of the original study. It uses that study's openly available, well-documented data (17 biological replicates of one genotype) as a teaching case for batch effects in RNA-seq: what they are, why caution is needed, how to detect them, how to handle them, and what they change downstream. The original paper had a different aim (benchmarking differential-expression tools).
+
 Reanalysis of the Arabidopsis Col-0 RNA-seq benchmarking dataset of Froussios et al. 2019
 (*Bioinformatics* 35(18):3372, doi:10.1093/bioinformatics/btz089; ArrayExpress E-MTAB-5446, ENA ERP021226).
 Paper (open access, CC BY 4.0): https://doi.org/10.1093/bioinformatics/btz089 ; also on ResearchGate: https://www.researchgate.net/publication/335922274
