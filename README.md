@@ -2,6 +2,7 @@
 
 Reanalysis of the Arabidopsis Col-0 RNA-seq benchmarking dataset of Froussios et al. 2019
 (*Bioinformatics* 35(18):3372, doi:10.1093/bioinformatics/btz089; ArrayExpress E-MTAB-5446, ENA ERP021226).
+Paper (open access, CC BY 4.0): https://doi.org/10.1093/bioinformatics/btz089 ; also on ResearchGate: https://www.researchgate.net/publication/335922274
 Each LinkedIn post of the series has its own folder; files are added post by post.
 
 ```
