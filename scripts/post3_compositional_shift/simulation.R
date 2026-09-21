@@ -42,7 +42,7 @@ pA <- ggplot(d[!d$changed, ], aes(x, y)) +
   geom_point(alpha = 0.15, size = 0.5, colour = "grey40") +
   geom_point(data = d[d$changed, ], colour = "#2C7FB8", size = 2.5) +
   labs(x = "sample 1 (log2 scale)", y = "sample 2 (log2 scale)",
-       title = sprintf("A. r = %.3f; 10 genes (blue) pushed to the top of the range", r0)) +
+       title = sprintf("A. r = %.3f; 10 genes (blue) pushed to the top of the range", cor(x, y2))) +
   theme_minimal(base_size = 12) + theme(plot.title = element_text(face = "bold", size = 11))
 pB <- ggplot(data.frame(r = c(r_new, r_30), scenario = rep(c("~1% of total signal", "30% of total signal"), each = n_loops)),
              aes(r, fill = scenario)) +
