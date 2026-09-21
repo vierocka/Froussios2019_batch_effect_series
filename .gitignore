@@ -1,0 +1,8 @@
+work/
+*.bam
+*.fastq*
+*.fq.gz
+*.sra
+# AED analysis: not part of this repository yet
+AED*
+*AED*
