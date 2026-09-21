@@ -32,7 +32,8 @@ Froussios2019_batch_effect_series/
     │
     └── post3_compositional_shift/     teaching simulation
         ├── simulation.R               two correlated log2 vectors; 10 extreme genes changed, 1000 loops
-        └── compositional_shift.png    figure of the post
+        ├── compositional_shift.png    figure of the post
+        └── README.md                  explanation of the simulation and what it means for QC
 ```
 
 ## Posts

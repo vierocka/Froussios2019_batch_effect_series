@@ -30,10 +30,10 @@ r_30 <- replicate(n_loops, {
 })
 
 cat(sprintf("baseline r = %.4f\n", r0))
-cat(sprintf("after changing %d of %d genes, %d loops: r range %.4f - %.4f, mean shift %.4f\n",
-            n_changed, n, n_loops, min(r_new), max(r_new), mean(r_new) - r0))
-cat(sprintf("30%% share scenario: r range %.4f - %.4f\n", min(r_30), max(r_30)))
-cat(sprintf("the %d genes hold %.1f%% of the linear-scale total (mean)\n", n_changed, 100 * mean(share_new)))
+cat(sprintf("scenario 1 (10 genes at 11-12, %.1f%% of linear total): r %.4f - %.4f over %d loops\n",
+            100 * mean(share_new), min(r_new), max(r_new), n_loops))
+cat(sprintf("scenario 2 (10 genes hold 30%% of linear total):      r %.4f - %.4f over %d loops\n\n",
+            min(r_30), max(r_30), n_loops))
 
 library(ggplot2); library(patchwork)
 idx <- sample(n, n_changed); y2 <- y; y2[idx] <- runif(n_changed, hi - 1, hi)
