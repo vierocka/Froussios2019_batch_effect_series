@@ -16,7 +16,8 @@ scripts/sra_download/         download the 17 runs with sra-tools
 scripts/reference/            TAIR10 (Ensembl Plants 63) genome, annotation, STAR index
 scripts/post2_rRNA_correlation/   trimming, STAR, featureCounts, rRNA counts, figure
 scripts/post3_compositional_shift/   simulation for teaching
-scripts/post4_rRNA_ignored/       sensitivity analysis using the paper's published rRNA fractions
+scripts/post4_rRNA_ignored/       what does an omitted feature do to normalization? (Panel A: two-component share rescaling)
+scripts/post5_normalization_false_DE/   can normalization choice change false-DE counts? (Panel B: 8 same-batch 3 vs 3 splits)
 ```
 
 | Post | Topic | Code |
@@ -24,7 +25,8 @@ scripts/post4_rRNA_ignored/       sensitivity analysis using the paper's publish
 | 1 | QC observations from the paper text and supplement | none |
 | 2 | rRNA fraction vs. genome-wide correlation | `scripts/post2_rRNA_correlation/` |
 | 3 | 10 extreme genes barely move a correlation (simulation) | `scripts/post3_compositional_shift/` |
-| 4 | sensitivity analysis using the paper's published rRNA fractions | `scripts/post4_rRNA_ignored/` |
+| 4 | what does an omitted feature do to normalization? | `scripts/post4_rRNA_ignored/` |
+| 5 | can normalization choice change false-DE counts? | `scripts/post5_normalization_false_DE/` |
 
 ## Run order
 ```bash
@@ -35,6 +37,7 @@ bash scripts/post2_rRNA_correlation/count_rRNA.sh
 Rscript scripts/post2_rRNA_correlation/rRNA_correlation_blindspot.R
 Rscript scripts/post3_compositional_shift/simulation.R
 Rscript scripts/post4_rRNA_ignored/rRNA_ignored.R
+Rscript scripts/post5_normalization_false_DE/false_DE_by_normalization.R
 ```
 Requires sra-tools, Trimmomatic, STAR, Subread (featureCounts) on `PATH`; R with DESeq2, ggplot2, patchwork, MASS.
 Long steps skip outputs that already exist and can be resubmitted on an HPC scheduler.

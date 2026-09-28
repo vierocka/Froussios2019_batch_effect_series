@@ -35,10 +35,14 @@ Froussios2019_batch_effect_series/
         ├── compositional_shift.png    figure of the post
         └── README.md                  explanation of the simulation and what it means for QC
     │
-    └── post4_rRNA_ignored/            sensitivity analysis using the paper's published rRNA fractions
-        ├── rRNA_ignored.R             panel A: two-component share rescaling; panel B: 8 same-batch 3 vs 3 splits, DE with size factors from a synthetic rRNA-added vs. coding-only matrix
-        ├── rRNA_ignored_panelB_results.csv   panel B's underlying numbers
-        └── rRNA_ignored.png          figure of the post
+    ├── post4_rRNA_ignored/            what does an omitted feature do to normalization?
+    │   ├── rRNA_ignored.R             one library (rep 11), two-component share rescaling
+    │   └── rRNA_ignored.png          figure of the post
+    │
+    └── post5_normalization_false_DE/  can normalization choice change false-DE counts?
+        ├── false_DE_by_normalization.R          8 same-batch 3 vs 3 splits (rep 6), DE with size factors from a synthetic rRNA-added vs. coding-only matrix
+        ├── false_DE_by_normalization_results.csv   underlying numbers
+        └── false_DE_by_normalization.png        figure of the post
 ```
 
 ## Posts
@@ -47,17 +51,23 @@ Froussios2019_batch_effect_series/
 | 1 | QC observations from the paper text and supplement | `publication/` |
 | 2 | rRNA fraction vs. genome-wide correlation | `scripts/post2_rRNA_correlation/` |
 | 3 | 10 extreme genes barely move a correlation | `scripts/post3_compositional_shift/` |
-| 4 | sensitivity analysis using the paper's published rRNA fractions | `scripts/post4_rRNA_ignored/` |
+| 4 | what does an omitted feature do to normalization? | `scripts/post4_rRNA_ignored/` |
+| 5 | can normalization choice change false-DE counts? | `scripts/post5_normalization_false_DE/` |
 
 ## Order of use
-`sra_download` -> `reference` -> `post2_rRNA_correlation` (trim/STAR/count, then rRNA count, then figure). `post3_compositional_shift` runs on its own.
+`sra_download` -> `reference` -> `post2_rRNA_correlation` (trim/STAR/count, then rRNA count, then figure). `post3_compositional_shift` runs on its own. `post4_rRNA_ignored` and `post5_normalization_false_DE` both only need `post2`'s coding-gene counts (`work/STAR_both/fC/`) and `data/paper_TableS2C_rRNA.csv`; post 5 additionally needs DESeq2.
+
+The teaching arc across posts 3-6: post 3 shows correlation can miss a dominant minority of
+features; post 4 shows omitting those features changes relative composition and normalization;
+post 5 shows normalization choice can alter downstream DE calls; post 6 (idea below) asks why a
+published 31.21% rRNA signal becomes 0.006% in a modern recount.
 
 ## Ideas for future posts
 
-**Post 5 (candidate): "How can 31% rRNA become 0.006%? Annotation and multimapping can make
+**Post 6 (candidate): "How can 31% rRNA become 0.006%? Annotation and multimapping can make
 contamination disappear."** The failed direct rRNA recount (current TAIR10.63 annotation, default
 STAR/featureCounts settings) isn't just a methods footnote — it's arguably a stronger, more
-dramatic result than post 4's synthetic-perturbation analysis, and could stand as its own post.
+dramatic result than posts 4-5's synthetic-perturbation analysis, and could stand as its own post.
 
 - Paper (Table S2C): replicate 11 has 31.21% rRNA, ranks **highest** of the 14 ExpA/ExpB samples.
 - Our own current-annotation/default-counting recount: 0.006%, ranks **lowest**.
