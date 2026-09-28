@@ -40,7 +40,8 @@ pA <- ggplot(dA, aes(log2(share), colour = total)) + geom_density(linewidth = 1)
 # Isolates the normalisation effect from the fitted-gene-set effect: DE is always tested on the
 # SAME coding-only matrix; only the size factors are estimated from with_rrna vs. coding-only (or
 # from their column sums, for total-count scaling), then assigned onto the coding-only DESeqDataSet.
-# This way any difference between "in the matrix" and "ignored" can only come from the size factors,
+# This way any difference between "included for size factors" and "ignored for size factors" can
+# only come from the size factors,
 # not from DESeq2's dispersion-trend fitting or independent filtering seeing a different gene set.
 n_de <- function(coding_m, norm_m, run_ids, total_norm) {
   cd <- data.frame(group = factor(rep(c("g1", "g2"), each = 3)), row.names = run_ids)
@@ -62,16 +63,16 @@ splits <- lapply(sample(combn(length(others), 2, simplify = FALSE), 8), function
 dB <- do.call(rbind, lapply(seq_along(splits), function(k) {
   ids <- splits[[k]]
   data.frame(split = k, normalisation = rep(c("DESeq2 median-of-ratios", "total-count scaling"), each = 2),
-             rRNA = rep(c("in the matrix", "ignored"), 2),
+             rRNA = rep(c("included for size factors", "ignored for size factors"), 2),
              n = c(n_de(coding, with_rrna, ids, FALSE), n_de(coding, coding, ids, FALSE),
                    n_de(coding, with_rrna, ids, TRUE),  n_de(coding, coding, ids, TRUE)))
 }))
 print(dB)
 write.csv(dB, "scripts/post4_rRNA_ignored/rRNA_ignored_panelB_results.csv", row.names = FALSE)
-dB$rRNA <- factor(dB$rRNA, levels = c("in the matrix", "ignored"))
+dB$rRNA <- factor(dB$rRNA, levels = c("included for size factors", "ignored for size factors"))
 pB <- ggplot(dB, aes(rRNA, n, group = split)) + geom_line(colour = "grey60") + geom_point(size = 2, colour = "#2C7FB8") +
   facet_wrap(~normalisation) + scale_y_sqrt() +
-  labs(x = "rRNA (source of size factors; DE always tested on the same coding-gene matrix)",
+  labs(x = "synthetic rRNA feature (never part of the tested DE matrix; DE always tested on the same coding-gene matrix)",
        y = "false-relative-to-label DE genes (padj < 0.05, sqrt scale)",
        title = "B. Same batch and genotype, no designed group difference:\n8 sampled 3-vs-3 splits from the 7 ExpA replicates (one line per split)") +
   theme_minimal(base_size = 12) + theme(plot.title = element_text(face = "bold", size = 11))

@@ -48,12 +48,13 @@ the replicates have no real biological or technical heterogeneity among themselv
 from the 7 ExpA replicates: replicate 6 plus 2 others in group 2, 3 of the remaining 4 in group 1
 (1 of the 7 unused per split; `set.seed(1)` makes the selection reproducible).
 
-Each split is run 4 ways, crossing the synthetic-rRNA-feature-present-in-the-size-factors vs.
-ignored with DESeq2's own median-of-ratios vs. simple total-count scaling — but DE is always tested
-on the *same* coding-only matrix; only the size factors differ between the two. This isolates the
-normalisation effect from DESeq2's dispersion-trend fitting or independent filtering, which could
-otherwise differ between the with-rRNA and coding-only gene sets. Panel B's `dB` table is also
-written to `rRNA_ignored_panelB_results.csv`.
+Each split is run 4 ways, crossing the synthetic rRNA feature included for size factors vs. ignored
+for size factors with DESeq2's own median-of-ratios vs. simple total-count scaling — but DE is
+always tested on the *same* coding-only matrix; the rRNA feature is never part of the tested DE
+matrix, only of size-factor estimation. This isolates the normalisation effect from DESeq2's
+dispersion-trend fitting or independent filtering, which could otherwise differ between the
+with-rRNA and coding-only gene sets. Panel B's `dB` table is also written to
+`rRNA_ignored_panelB_results.csv`.
 
 ## Interpretation
 - DESeq2 median-of-ratios is nearly invariant to this specific synthetic perturbation — the added
@@ -74,11 +75,11 @@ written to `rRNA_ignored_panelB_results.csv`.
   sample-specific compositional rescaling of every other gene's apparent expression, and
   normalisation strategies do not all respond to it the same way.
 - DESeq2's default normalisation is more robust to this specific kind of perturbation than
-  total-count scaling — but that robustness does not immunize a design against a genuinely
-  contaminated replicate (see the persistently high-count splits in both facets of panel B).
-- The rRNA fraction per sample (post 2's direct measurement) is still the check that would catch a
-  real dominant-feature problem; a good genome-wide correlation or a reasonable-looking DESeq2 run
-  will not flag it.
+  total-count scaling — but that robustness does not immunize a design against an rRNA-rich
+  replicate (see the persistently high-count splits in both facets of panel B).
+- The paper's directly reported per-sample rRNA fraction, used in post 2, is still the measurement
+  that reveals the dominant-feature problem; a good genome-wide correlation or a
+  reasonable-looking DESeq2 run will not flag it.
 
 ## Limits
 - **This is a synthetic sensitivity analysis, not a reconstruction of the real rRNA count
@@ -94,10 +95,12 @@ written to `rRNA_ignored_panelB_results.csv`.
   simplifying assumption, not a complete accounting of the library.
 - Panel A's 0.54 log2 shift is specific to one library (31% rRNA); it scales with each library's
   own published rRNA fraction, not a fixed constant across samples.
-- Panel B draws 8 of the 15 possible 3-vs-3-from-7 splits, not an exhaustive enumeration — a
-  teaching-scale illustration, not a full power analysis. Replicate 6 is in every split by
-  construction, so panel B specifically probes "what happens when a known high-rRNA replicate is
-  in the design", not a randomly representative sample of ExpA as a whole.
+- Panel B shows eight sampled comparisons. The code samples eight of the 15 possible choices for
+  replicate 6's two group-2 partners, then randomly selects three of the remaining four samples
+  for group 1. This is not an exhaustive enumeration of the 60 possible comparisons
+  (`choose(6,2) * choose(4,3) = 15 * 4 = 60`). Replicate 6 is in every split by construction, so
+  panel B specifically probes "what happens when an rRNA-rich replicate is in the design", not a
+  randomly representative sample of ExpA as a whole.
 - As stated above: persistently large DE counts under both treatments show structure already in
   the real coding-gene data. This analysis is not designed to, and does not, attribute those calls
   to uncounted rRNA specifically.
