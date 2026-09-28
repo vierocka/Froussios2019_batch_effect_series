@@ -34,6 +34,10 @@ Froussios2019_batch_effect_series/
         ├── simulation.R               two correlated log2 vectors; 10 extreme genes changed, 1000 loops
         ├── compositional_shift.png    figure of the post
         └── README.md                  explanation of the simulation and what it means for QC
+    │
+    └── post4_rRNA_ignored/            what changes if rRNA loci are ignored
+        ├── rRNA_ignored.R             panel A: one library, rRNA in vs. out of the total; panel B: 8 same-batch 3 vs 3 splits, DE with/without rRNA
+        └── rRNA_ignored.png          figure of the post
 ```
 
 ## Posts
@@ -42,6 +46,7 @@ Froussios2019_batch_effect_series/
 | 1 | QC observations from the paper text and supplement | `publication/` |
 | 2 | rRNA fraction vs. genome-wide correlation | `scripts/post2_rRNA_correlation/` |
 | 3 | 10 extreme genes barely move a correlation | `scripts/post3_compositional_shift/` |
+| 4 | ignoring rRNA loci: normalisation and false DE | `scripts/post4_rRNA_ignored/` |
 
 ## Order of use
 `sra_download` -> `reference` -> `post2_rRNA_correlation` (trim/STAR/count, then rRNA count, then figure). `post3_compositional_shift` runs on its own.
