@@ -72,8 +72,9 @@ write.csv(dB, "scripts/post4_rRNA_ignored/rRNA_ignored_panelB_results.csv", row.
 dB$rRNA <- factor(dB$rRNA, levels = c("included for size factors", "ignored for size factors"))
 pB <- ggplot(dB, aes(rRNA, n, group = split)) + geom_line(colour = "grey60") + geom_point(size = 2, colour = "#2C7FB8") +
   facet_wrap(~normalisation) + scale_y_sqrt() +
-  labs(x = "synthetic rRNA feature (never part of the tested DE matrix; DE always tested on the same coding-gene matrix)",
-       y = "false-relative-to-label DE genes (padj < 0.05, sqrt scale)",
+  scale_x_discrete(labels = c("included for size factors" = "included", "ignored for size factors" = "ignored")) +
+  labs(x = "synthetic rRNA feature: source of size factors",
+       y = "false-relative-to-label\nDE genes (padj < 0.05, sqrt scale)",
        title = "B. Same batch and genotype, no designed group difference:\n8 sampled 3-vs-3 splits from the 7 ExpA replicates (one line per split)") +
   theme_minimal(base_size = 12) + theme(plot.title = element_text(face = "bold", size = 11))
 
