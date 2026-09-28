@@ -35,8 +35,9 @@ Froussios2019_batch_effect_series/
         ├── compositional_shift.png    figure of the post
         └── README.md                  explanation of the simulation and what it means for QC
     │
-    └── post4_rRNA_ignored/            what changes if rRNA loci are ignored
-        ├── rRNA_ignored.R             panel A: one library, rRNA in vs. out of the total; panel B: 8 same-batch 3 vs 3 splits, DE with/without rRNA
+    └── post4_rRNA_ignored/            sensitivity analysis using the paper's published rRNA fractions
+        ├── rRNA_ignored.R             panel A: two-component share rescaling; panel B: 8 same-batch 3 vs 3 splits, DE with size factors from a synthetic rRNA-added vs. coding-only matrix
+        ├── rRNA_ignored_panelB_results.csv   panel B's underlying numbers
         └── rRNA_ignored.png          figure of the post
 ```
 
@@ -46,7 +47,27 @@ Froussios2019_batch_effect_series/
 | 1 | QC observations from the paper text and supplement | `publication/` |
 | 2 | rRNA fraction vs. genome-wide correlation | `scripts/post2_rRNA_correlation/` |
 | 3 | 10 extreme genes barely move a correlation | `scripts/post3_compositional_shift/` |
-| 4 | ignoring rRNA loci: normalisation and false DE | `scripts/post4_rRNA_ignored/` |
+| 4 | sensitivity analysis using the paper's published rRNA fractions | `scripts/post4_rRNA_ignored/` |
 
 ## Order of use
 `sra_download` -> `reference` -> `post2_rRNA_correlation` (trim/STAR/count, then rRNA count, then figure). `post3_compositional_shift` runs on its own.
+
+## Ideas for future posts
+
+**Post 5 (candidate): "How can 31% rRNA become 0.006%? Annotation and multimapping can make
+contamination disappear."** The failed direct rRNA recount (current TAIR10.63 annotation, default
+STAR/featureCounts settings) isn't just a methods footnote — it's arguably a stronger, more
+dramatic result than post 4's synthetic-perturbation analysis, and could stand as its own post.
+
+- Paper (Table S2C): replicate 11 has 31.21% rRNA, ranks **highest** of the 14 ExpA/ExpB samples.
+- Our own current-annotation/default-counting recount: 0.006%, ranks **lowest**.
+- Not a quantitative underestimate — a complete failure to preserve sample ordering (rep 11 flips
+  from most- to least-contaminated).
+- Demonstrates "I counted the annotated rRNA genes" is not a valid rRNA QC measurement when: the
+  annotation contains too few rRNA loci (rDNA is highly repetitive, most true copies are
+  collapsed/unassembled in the reference); the aligner excludes reads mapping to many loci
+  (`--outFilterMultimapNmax`); and the counting step excludes multimappers by default (no `-M`).
+- Source material already exists in the wider investigation's notes (`NOTES.md`,
+  `froussios2019_paperrepro_04_rRNA_multimapper_ramses.sh` for the lenient-multimap rerun that
+  tests how much of the gap that closes) — would need adapting into this repo's teaching-post
+  style (own script + README + figure), not written from scratch.

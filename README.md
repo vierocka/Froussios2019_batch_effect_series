@@ -16,7 +16,7 @@ scripts/sra_download/         download the 17 runs with sra-tools
 scripts/reference/            TAIR10 (Ensembl Plants 63) genome, annotation, STAR index
 scripts/post2_rRNA_correlation/   trimming, STAR, featureCounts, rRNA counts, figure
 scripts/post3_compositional_shift/   simulation for teaching
-scripts/post4_rRNA_ignored/       what changes if rRNA loci are left uncounted
+scripts/post4_rRNA_ignored/       sensitivity analysis using the paper's published rRNA fractions
 ```
 
 | Post | Topic | Code |
@@ -24,7 +24,7 @@ scripts/post4_rRNA_ignored/       what changes if rRNA loci are left uncounted
 | 1 | QC observations from the paper text and supplement | none |
 | 2 | rRNA fraction vs. genome-wide correlation | `scripts/post2_rRNA_correlation/` |
 | 3 | 10 extreme genes barely move a correlation (simulation) | `scripts/post3_compositional_shift/` |
-| 4 | ignoring rRNA loci: normalisation and false DE | `scripts/post4_rRNA_ignored/` |
+| 4 | sensitivity analysis using the paper's published rRNA fractions | `scripts/post4_rRNA_ignored/` |
 
 ## Run order
 ```bash
