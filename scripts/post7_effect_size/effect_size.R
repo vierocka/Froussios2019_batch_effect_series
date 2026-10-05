@@ -40,7 +40,10 @@ calls <- function(dds) {
     `|log2FC| > 2 (raw)`          = sum(abs(lfc) > 2, na.rm = TRUE),
     `|log2FC| > 1 (shrunken)`     = sum(abs(sh) > 1, na.rm = TRUE),
     `|log2FC| > 2 (shrunken)`     = sum(abs(sh) > 2, na.rm = TRUE),
-    `padj < 0.05 & |log2FC| > 1`  = sum(r$padj < 0.05 & abs(lfc) > 1, na.rm = TRUE),
+    `padj < 0.05 & |log2FC| > 1 (raw)`      = sum(r$padj < 0.05 & abs(lfc) > 1, na.rm = TRUE),
+    `padj < 0.05 & |log2FC| > 2 (raw)`      = sum(r$padj < 0.05 & abs(lfc) > 2, na.rm = TRUE),
+    `padj < 0.05 & |log2FC| > 1 (shrunken)` = sum(r$padj < 0.05 & abs(sh) > 1, na.rm = TRUE),
+    `padj < 0.05 & |log2FC| > 2 (shrunken)` = sum(r$padj < 0.05 & abs(sh) > 2, na.rm = TRUE),
     `test |log2FC| > 1, padj < 0.05` = sum(t1$padj < 0.05, na.rm = TRUE))
 }
 treat <- data.frame(normalisation = rep(c("DESeq2 median-of-ratios", "total-count scaling"), each = 2),
@@ -88,26 +91,26 @@ print(transform(lowc, median_baseMean = round(median_baseMean, 1), pct_baseMean_
                 median_baseMean_all = round(median_baseMean_all)), row.names = FALSE)
 write.csv(lowc, file.path(out, "raw_log2FC_expression.csv"), row.names = FALSE)
 
-# Figure
-rules <- c("padj < 0.05", "|log2FC| > 1 (raw)", "|log2FC| > 2 (raw)", "|log2FC| > 1 (shrunken)", "|log2FC| > 2 (shrunken)")
-dA <- res[res$rule %in% rules, ]
-dA$rule <- factor(dA$rule, levels = rules)
-dA$rRNA <- factor(dA$rRNA, levels = c("included for size factors", "ignored for size factors"))
-pA <- ggplot(dA, aes(rRNA, n, group = split)) + geom_line(colour = "grey60") +
-  geom_point(size = 2, colour = "#2C7FB8") +
-  facet_grid(normalisation ~ rule) + scale_y_sqrt() +
-  scale_x_discrete(labels = c("included for size factors" = "incl.", "ignored for size factors" = "ign.")) +
-  labs(x = "synthetic rRNA feature: source of size factors", y = "genes called (sqrt scale)",
-       title = "A. Genes called under five rules (one line per split; same 8 splits as post 5)") +
-  theme_minimal(base_size = 11) + theme(plot.title = element_text(face = "bold"), strip.text = element_text(size = 9))
-dB <- shift[shift$normalisation == "total-count scaling", ]; dB$split <- factor(dB$split)
-pB <- ggplot(dB, aes(split)) +
-  geom_col(aes(y = median_shift), fill = "#D95F0E", width = 0.6) +
-  geom_point(aes(y = sf_shift), size = 2.5, colour = "grey20") +
-  geom_hline(yintercept = 0, colour = "grey40") +
-  labs(x = "split", y = "change in log2FC\n(rRNA ignored minus included)",
-       title = "B. Total-count scaling: ignoring the rRNA feature shifts every gene's log2FC by about the same amount",
-       subtitle = "bar = median over genes (IQR over genes about 0.02); dot = shift expected from the size factors alone. Median-of-ratios: 0 in every split") +
-  theme_minimal(base_size = 11) + theme(plot.title = element_text(face = "bold"))
-p <- pA / pB + plot_layout(heights = c(1.6, 1))
-ggsave(file.path(out, "effect_size.png"), p, width = 12, height = 9, dpi = 300, bg = "white")
+# Figure: DESeq2 median-of-ratios only (the stable normalization from post 5; including or
+# ignoring the rRNA feature gives the same size factors, so each split is drawn once, rRNA ignored)
+mor <- res[res$normalisation == "DESeq2 median-of-ratios" & res$rRNA == "ignored for size factors", ]
+mor$split <- factor(mor$split)
+panel <- function(rules, title, subtitle) {
+  d <- mor[mor$rule %in% rules, ]; d$rule <- factor(d$rule, levels = rules)
+  ggplot(d, aes(rule, n, group = split)) +
+    geom_line(colour = "grey75") + geom_point(aes(colour = split == "6"), size = 2.5) +
+    scale_colour_manual(values = c(`FALSE` = "#2C7FB8", `TRUE` = "#D95F0E"),
+                        labels = c("other splits", "split 6 (post 6)"), name = NULL) +
+    scale_y_sqrt(breaks = c(0, 10, 100, 500, 1000, 2000)) +
+    scale_x_discrete(labels = function(x) gsub(" (\\(|& )", "\n\\1", x)) +
+    labs(x = NULL, y = "genes called (sqrt scale)", title = title, subtitle = subtitle) +
+    theme_minimal(base_size = 12) + theme(plot.title = element_text(face = "bold"), legend.position = "bottom")
+}
+pA <- panel(c("padj < 0.05", "|log2FC| > 1 (raw)", "|log2FC| > 2 (raw)", "|log2FC| > 1 (shrunken)", "|log2FC| > 2 (shrunken)"),
+            "A. Effect-size cutoffs alone",
+            "8 same-batch 3-vs-3 splits, no designed difference; DESeq2 median-of-ratios")
+pB <- panel(c("padj < 0.05", "padj < 0.05 & |log2FC| > 1 (raw)", "padj < 0.05 & |log2FC| > 2 (raw)",
+              "padj < 0.05 & |log2FC| > 1 (shrunken)", "padj < 0.05 & |log2FC| > 2 (shrunken)"),
+            "B. Significance combined with effect size", "same splits; raw and shrunken (apeglm) log2FC")
+p <- (pA | pB) + plot_layout(widths = c(1, 1), guides = "collect") & theme(legend.position = "bottom")
+ggsave(file.path(out, "effect_size.png"), p, width = 15, height = 6.5, dpi = 300, bg = "white")

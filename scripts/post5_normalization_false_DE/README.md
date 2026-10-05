@@ -95,5 +95,5 @@ where it comes from.
 ## Next posts
 - Post 6 (`scripts/post6_split_structure/`): why does split 6 produce hundreds of DE genes even
   when normalization is robust?
-- Post 7 (`scripts/post7_effect_size/`): does normalization merely move genes across the
-  `padj < 0.05` cutoff, or does it also change their estimated effect sizes (log2 fold changes)?
+- Post 7 (`scripts/post7_effect_size/`): significance vs. effect size; how many genes do
+  `padj < 0.05`, `|log2FC| > 1 / > 2` and their combinations call?

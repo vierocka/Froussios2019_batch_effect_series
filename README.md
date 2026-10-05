@@ -19,7 +19,7 @@ scripts/post3_compositional_shift/      simulation: 10 extreme genes vs. a corre
 scripts/post4_rRNA_ignored/             what does an omitted feature do to library shares?
 scripts/post5_normalization_false_DE/   can normalization choice change false-DE counts?
 scripts/post6_split_structure/          why does one same-batch 3-vs-3 split give 689 DE genes?
-scripts/post7_effect_size/              does normalization also shift effect sizes (log2FC)?
+scripts/post7_effect_size/              significance vs. effect size (log2FC) as DE rules
 ```
 
 | Post | Topic | Code |
@@ -30,11 +30,12 @@ scripts/post7_effect_size/              does normalization also shift effect siz
 | 4 | what does an omitted feature do to normalization? | `scripts/post4_rRNA_ignored/` |
 | 5 | can normalization choice change false-DE counts? | `scripts/post5_normalization_false_DE/` |
 | 6 | why does one same-batch 3-vs-3 split give 689 DE genes? | `scripts/post6_split_structure/` |
-| 7 | does normalization also shift effect sizes (log2FC)? | `scripts/post7_effect_size/` |
+| 7 | significance vs. effect size: padj < 0.05, \|log2FC\| > 1 / > 2 and combinations | `scripts/post7_effect_size/` |
 
-Each post folder has a README with the question, method, results and limits. Planned posts
-(next: how a reported 31% rRNA becomes 0.006% in a different counting approach) and open
-questions are in `ROADMAP.md`.
+Each post folder has a README with the question, method, results and limits. Planned posts and
+open questions are in `ROADMAP.md`: what median-of-ratios does (8), how apeglm shrinks fold
+changes (9), DESeq2 (+ apeglm) vs. rlog + t-test (10), and how a reported 31% rRNA becomes 0.006%
+in a different counting approach, including strandedness (11).
 
 ## Run order
 ```bash
@@ -76,7 +77,7 @@ ENA `sample_title` numbering differs from the paper's replicate numbering. Use `
 - `featureCounts -t gene` does not count the rRNA loci (typed `ncRNA_gene`); they are counted separately in `count_rRNA.sh`.
 - The rRNA recount uses the current annotation (4 rRNA loci) and `--outFilterMultimapNmax 2`, so it undercounts severely relative to the paper's Table S2C (replicate 11: about 0.006% vs. 31.21%). Post 2's "incl. 4 rRNA" correlation line therefore carries almost no rRNA signal (see `scripts/post2_rRNA_correlation/README.md`); posts 4, 5 and 7 use the published fractions instead.
 - The libraries are stranded (TruSeq Stranded Total RNA, paper section 2.1), but the gene counts
-  were made unstranded (`featureCounts` default `-s 0`); `count_rRNA.sh` uses `-s 2`. Post 8
-  will test `-s 0/1/2` and rerun posts 2 and 4-7 on stranded counts (plan in `ROADMAP.md`).
+  were made unstranded (`featureCounts` default `-s 0`); `count_rRNA.sh` uses `-s 2`. Post 11
+  will test `-s 0/1/2` and rerun posts 2 and 4-10 on stranded counts (plan in `ROADMAP.md`).
 - Posts 4, 5 and 7 add a **synthetic** rRNA feature calibrated to the published percentages; they
   are sensitivity analyses, not reconstructions of the real rRNA counts.

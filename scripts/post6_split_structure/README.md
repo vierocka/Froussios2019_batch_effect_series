@@ -67,12 +67,12 @@ by direction. Panel B: rRNA % per replicate from the paper's Table S2C, bar = gr
 ## Limits
 - One experiment (ExpA, 7 replicates), DESeq2 defaults, one threshold (`padj < 0.05`).
 - Gene counts were made unstranded (`featureCounts` default `-s 0`) although the libraries are
-  stranded (paper section 2.1); post 8 tests `-s 0/1/2` and reruns this post on stranded counts.
+  stranded (paper section 2.1); post 11 tests `-s 0/1/2` and reruns this post on stranded counts.
 - The light/harvest-time reading is a hypothesis from a few known genes, not a tested result; it
   needs a GO enrichment of the 689 genes and the sample metadata (ArrayExpress E-MTAB-5446 SDRF,
   or the authors).
 - Replicate numbering is the paper's (`data/replicate_map.tsv`); whether it reflects processing
   order is not documented.
 
-**Next post:** does normalization merely move genes across the `padj < 0.05` cutoff, or does it
-also change their estimated effect sizes? (post 7)
+**Next post:** significance vs. effect size: how many genes do `padj < 0.05`, `|log2FC| > 1 / > 2`
+and their combinations call when there is no designed difference? (post 7)

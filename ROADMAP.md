@@ -55,10 +55,11 @@ Froussios2019_batch_effect_series/
     │   ├── split_structure.png        figure of the post
     │   └── README.md                  results, interpretation and limits
     │
-    └── post7_effect_size/             does normalization also shift effect sizes (log2FC)?
-        ├── effect_size.R              post 5's 8 splits x 4 size-factor treatments, five DE call rules
+    └── post7_effect_size/             significance vs. effect size as DE rules
+        ├── effect_size.R              post 5's 8 splits x 4 size-factor treatments, ten DE call rules
         ├── effect_size_results.csv    genes called per split, treatment and rule
         ├── log2FC_shift.csv           log2FC shift per split when the rRNA feature is ignored
+        ├── raw_log2FC_expression.csv  expression of the genes passing a raw log2FC cutoff
         ├── effect_size.png            figure of the post
         └── README.md                  results, interpretation and limits
 ```
@@ -72,18 +73,28 @@ Froussios2019_batch_effect_series/
 | 4 | what does an omitted feature do to normalization? | `scripts/post4_rRNA_ignored/` |
 | 5 | can normalization choice change false-DE counts? | `scripts/post5_normalization_false_DE/` |
 | 6 | why does one same-batch 3-vs-3 split give 689 DE genes? | `scripts/post6_split_structure/` |
-| 7 | does normalization only move genes across padj < 0.05, or also shift effect sizes (log2FC)? | `scripts/post7_effect_size/` |
-| 8 (next) | how can 31% rRNA become 0.006% in a different counting approach? | `scripts/post8_rRNA_recount/` (planned) |
+| 7 | significance vs. effect size: padj < 0.05, \|log2FC\| > 1 / > 2 and combinations | `scripts/post7_effect_size/` |
+| 8 (next) | what does DESeq2's median-of-ratios actually do? | `scripts/post8_median_of_ratios/` (planned) |
+| 9 | how does apeglm shrink a fold change? | `scripts/post9_apeglm_shrinkage/` (planned) |
+| 10 | DESeq2 (+ apeglm) vs. rlog + t-test on the same splits | `scripts/post10_deseq2_vs_rlog_ttest/` (planned) |
+| 11 | how can 31% rRNA become 0.006% in a different counting approach? (+ strandedness) | `scripts/post11_rRNA_recount/` (planned) |
 
 ## Order of use
 `sra_download` -> `reference` -> `post2_rRNA_correlation` (trim/STAR/count, then rRNA count, then figure). `post3_compositional_shift` runs on its own. `post4_rRNA_ignored` and `post5_normalization_false_DE` both only need `post2`'s coding-gene counts (`work/STAR_both/fC/`) and `data/paper_TableS2C_rRNA.csv`; post 5 additionally needs DESeq2. `post6_split_structure` and `post7_effect_size` need the same counts (post 6 also ggrepel, a few minutes with `THREADS`; post 7 also apeglm, about 15 minutes).
 
-The teaching arc across posts 3-8: post 3 shows correlation can miss a dominant minority of
-features; post 4 shows omitting those features changes relative composition and normalization;
-post 5 shows normalization choice can alter downstream DE calls (padj < 0.05); post 6 looks at
-the one split that gives hundreds of DE genes under every normalization, i.e. structure among
-"identical" replicates; post 7 asks whether normalization also shifts effect sizes (log2FC);
-post 8 asks why a published 31.21% rRNA signal becomes 0.006% in a modern recount.
+The teaching arc:
+- **Posts 2-3, detection:** rRNA content varies about 25-fold among "identical" replicates, and
+  genome-wide correlation cannot see it (post 3 shows why).
+- **Posts 4-5, consequences:** omitting a dominant feature rescales every gene's share (post 4);
+  whether that changes DE calls depends on the normalization (post 5).
+- **Posts 6-7, reading DE results:** a split with hundreds of DE genes reflects structure among the
+  replicates, not rRNA (post 6); the DE rule (significance, raw or shrunken effect size, or both)
+  changes the count by orders of magnitude (post 7).
+- **Posts 8-10, under the hood** of the tools used in posts 5-7: what median-of-ratios computes and
+  why one extra row barely moves it (post 8); how apeglm shrinks fold changes (post 9); what changes
+  when the same splits are tested with rlog + t-test instead of DESeq2 (post 10).
+- **Post 11, back upstream:** why a published 31.21% rRNA fraction becomes 0.006% in a recount,
+  and whether counting unstranded (`-s 0`) changed any result in posts 2-10.
 
 ## Ready to publish
 
@@ -100,23 +111,69 @@ Open follow-ups:
   coding-gene reads in every ExpA sample (Mt 0.3%); a second dominant feature, stable across
   samples, relevant to total-count scaling (posts 4-5).
 
-**Post 7: "Does normalization only move genes across the padj < 0.05 line, or does it also shift
-the estimated effect sizes?"** Done: `scripts/post7_effect_size/` (script, figure, README with all
-numbers). Same 8 splits and 4 size-factor treatments as post 5, seven DE call rules.
-Short version: with total-count scaling, ignoring the rRNA feature shifts every gene's log2FC by
-about 0.1 log2 (median-of-ratios: 0), so raw `|log2FC|` cutoff counts change in all 8 splits. Raw
-cutoffs alone are mostly noise from genes with a few reads (2,093-2,494 genes pass `|log2FC| > 1`
-in splits with no designed difference); shrunken log2FC (apeglm), `padj & |log2FC|` and
-`lfcThreshold` give 0-140 genes and keep split 6 as the outlier.
+**Post 7: "Significance vs. effect size: how many genes does each DE rule call when there is no
+designed difference?"** Done: `scripts/post7_effect_size/` (script, figure, README with all
+numbers). DESeq2 median-of-ratios (the stable normalization from post 5), same 8 splits as post 5,
+ten DE call rules. Figure: A = `padj` vs. raw and shrunken `|log2FC| > 1 / > 2`; B = `padj < 0.05`
+alone and combined with raw and shrunken `|log2FC| > 1 / > 2`.
+Short version: raw fold-change cutoffs alone flag 2,098-2,448 (`> 1`) and 589-826 (`> 2`) genes per
+split, almost all with a handful of reads; shrinkage (apeglm), `padj & |log2FC|` (raw or shrunken)
+and `lfcThreshold` give 0-140 and keep split 6 as the outlier, whose 689 genes are mostly < 2-fold changes. Side note
+in the README: under total-count scaling, ignoring the rRNA feature shifts every log2FC by about
+0.1 log2, so raw cutoff counts change in all 8 splits.
 Open follow-ups:
-- All 60 rep-6 splits instead of 8; ashr and normal shrinkage next to apeglm (ashr not installed).
+- All 60 rep-6 splits instead of 8. (apeglm vs. normal vs. ashr shrinkage: post 9.)
 - Same rules on post 6's all-70-split table: which rule best separates split-6-like structure
   from noise?
 
-## Next post
+## Planned posts, in order
 
-**Post 8: "How can a sample reported to contain 31% rRNA become 0.006% in a different counting
-approach?"** Planned folder: `scripts/post8_rRNA_recount/` (own script + README + figure).
+**Post 8: "What does DESeq2's median-of-ratios actually do?"** Planned folder:
+`scripts/post8_median_of_ratios/` (own script + README + figure). Explains the normalization that
+was stable in post 5 and used in posts 6-7.
+- Step by step on the ExpA counts: per-gene geometric mean across samples (the pseudo-reference;
+  genes with a zero in any sample drop out: how many?), each sample's ratios to it, the median of
+  those ratios = the size factor.
+- Compare with total-count size factors (column sums), sample by sample; replicate 6 (23.7% rRNA)
+  is where they should differ most once the synthetic rRNA row is added.
+- Why one dominant row barely moves it: one more ratio among about 20,000; post 7 measured the
+  change at about 1e-6. Contrast: total-count scaling moves by the row's whole share.
+- Chloroplast genes take 58-61% of the counted reads (post 6 side finding): what that does to
+  total-count vs. median-of-ratios size factors.
+- Assumption and when it breaks: most genes are not DE, and there is no global shift in total
+  mRNA. Spike-ins (ERCC, present in these libraries but not in our reference) are the usual check.
+- Figure idea: A = per-sample distribution of gene ratios to the pseudo-reference, median marked;
+  B = size factors from median-of-ratios vs. total counts, with and without the rRNA row.
+
+**Post 9: "How does apeglm shrink a fold change?"** Planned folder:
+`scripts/post9_apeglm_shrinkage/`. Explains why raw `|log2FC| > 1` calls 2,000+ genes per
+no-difference split in post 7 but shrunken `|log2FC| > 1` only 1-102.
+- MA plots (log2FC vs. mean expression), raw vs. shrunken, for one null split and split 6.
+- Shrinkage vs. information: low-count / high-variance genes are pulled to 0, well-measured genes
+  keep their estimate. Pick a few example genes (e.g. 0 vs. 2 reads: raw 4-fold, shrunken ~0; a
+  well-expressed split-6 gene: almost unchanged) and show raw and shrunken values with their SE.
+- How it works, in plain terms: the estimate is the posterior mode under a heavy-tailed prior on
+  log2FC whose scale is estimated from all genes; it changes the effect size, not the Wald p-value
+  (`padj` stays the same; apeglm's s-values are an alternative).
+- Compare apeglm with `type = "normal"` and `"ashr"` (install ashr).
+
+**Post 10: "DESeq2 (+ apeglm) vs. rlog + t-test: same splits, different answers?"** Planned folder:
+`scripts/post10_deseq2_vs_rlog_ttest/`.
+- Same splits as post 5 (8) and post 6 (all 70). Per split: DESeq2 `padj < 0.05`; DESeq2 `padj` &
+  shrunken `|log2FC| > 1`; rlog (and vst) + per-gene Welch t-test + BH; limma on rlog as the
+  moderated middle ground.
+- Questions: how many genes each calls in no-designed-difference splits; overlap of the gene lists
+  in split 6; which genes only the t-test calls (low counts? genes with one extreme replicate?);
+  `rlog(blind = TRUE)` vs. `blind = FALSE`.
+- Point: with n = 3 per group a gene-by-gene t-test estimates each variance from 4 degrees of
+  freedom; DESeq2 shares information across genes (dispersion trend). rlog/vst are meant for
+  visualization and clustering, not for DE testing (DESeq2 vignette); show what goes wrong when
+  they are used for it.
+
+**Post 11: "How can a sample reported to contain 31% rRNA become 0.006% in a different counting
+approach?"** Planned folder: `scripts/post11_rRNA_recount/` (own script + README + figure).
+Placed last because it needs the BAMs on the HPC (realignment / recounting) and reruns the earlier
+posts on stranded counts.
 The direct rRNA recount (`count_rRNA.sh`: current TAIR10.63 annotation, STAR
 `--outFilterMultimapNmax 2`, featureCounts without `-M`) is not just a methods footnote; it is
 arguably a stronger result than the synthetic perturbations of posts 4-5.
@@ -138,7 +195,7 @@ arguably a stronger result than the synthetic perturbations of posts 4-5.
 - Open question to settle first: what is Table S2C's denominator (reads, read pairs, aligned
   reads, input)? A % is only comparable if numerator and denominator are in the same units.
 
-**Post 8 to-do: strandedness (`featureCounts -s`) as one of the counting choices.**
+**Post 11 to-do: strandedness (`featureCounts -s`) as one of the counting choices.**
 The paper used "Illumina TruSeq Stranded Total RNA with Ribo-Zero Plant" (section 2.1), i.e. a
 reverse-stranded library, but `trim_star_featurecounts.sh` counts genes with the featureCounts
 default `-s 0` (unstranded), while `count_rRNA.sh` uses `-s 2`. Posts 2 and 4-7 all use the
@@ -153,21 +210,21 @@ unstranded gene counts. Plan:
    Per sample: assigned %, and how many genes change by more than 10% / 2-fold between `-s 0` and
    `-s 2` (expected: genes overlapping antisense transcripts or neighbouring genes on the other
    strand lose reads they should never have had).
-3. **rRNA counts with `-s 0`, `-s 1`, `-s 2`** (`count_rRNA.sh`) as one rung of the post 8 ladder:
+3. **rRNA counts with `-s 0`, `-s 1`, `-s 2`** (`count_rRNA.sh`) as one rung of the post 11 ladder:
    paper 31.21% -> current recount (0.006%) -> `-s` variants -> featureCounts `-M` (multimappers)
    -> higher `--outFilterMultimapNmax` -> annotation-independent count (SortMeRNA/BBDuk vs. SILVA).
    For each rung: rep 11's %, and the Spearman correlation of the 14 samples' ranking with Table
    S2C. Expected: `-s` alone explains little of the gap (the main losses are missing rDNA loci and
    discarded multimappers), but a wrong `-s` would make it worse; check, don't assume.
-4. **Downstream check: rerun posts 2 and 4-7 on the `-s 2` gene counts** and report whether any
+4. **Downstream check: rerun posts 2 and 4-10 on the `-s 2` gene counts** and report whether any
    conclusion changes (post 2 correlation level, post 4's 0.54 log2 shift, post 5's 4-of-8 splits,
-   post 6's 689 DE genes and PC1 gradient, post 7's ranges). If nothing material changes, that is
-   one sentence in post 8; if something does, it gets its own correction note in the affected
+   post 6's 689 DE genes and PC1 gradient, post 7's ranges, posts 8-10). If nothing material
+   changes, that is one sentence in post 11; if something does, it gets its own correction note in the affected
    post's README.
 
 ## Investigation backlog
 
-Every result in posts 2-8 depends on choices made upstream. Each axis below is a candidate
+Every result in posts 2-11 depends on choices made upstream. Each axis below is a candidate
 sensitivity analysis (or post) asking: does the conclusion survive a different reasonable choice?
 
 **Normalisations**
@@ -176,7 +233,7 @@ sensitivity analysis (or post) asking: does the conclusion survive a different r
 - Removal of unwanted variation (RUVg with ERCCs as controls, RUVs with replicates), and
   `~ batch` (ExpA/ExpB) in the design vs. not.
 - Post 5 done exhaustively: all 60 rep-6 splits instead of 8, ExpB as well, and with rep 11 in.
-- Real per-sample rRNA counts (once post 8 has a usable recount) in place of the synthetic feature.
+- Real per-sample rRNA counts (once post 11 has a usable recount) in place of the synthetic feature.
 
 **Filtering**
 - Low-count gene filters: `rowSums > 0` (current) vs. `edgeR::filterByExpr` vs. >= 10 counts in
@@ -203,7 +260,7 @@ sensitivity analysis (or post) asking: does the conclusion survive a different r
 **Counting methods**
 - featureCounts `-M` (multimappers), `-M --fraction`, `-O` (overlapping features), `-t exon` vs.
   `-t gene`, `-p` with/without `-B -P`.
-- Strandedness (`-s 0/1/2`): planned as part of post 8, see "Post 8 to-do" above.
+- Strandedness (`-s 0/1/2`): planned as part of post 11, see "Post 11 to-do" above.
 - HTSeq-count (union / intersection modes) vs. featureCounts.
 - Annotation-independent rRNA measurement: SortMeRNA or BBDuk against SILVA/Rfam rRNA,
   FastQ Screen; this does not depend on how many rDNA copies the reference has.
