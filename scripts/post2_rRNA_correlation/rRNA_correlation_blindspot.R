@@ -1,5 +1,6 @@
 # Post figure: rRNA fraction per sample (paper Table S2C) vs. mean rlog correlation with the other samples.
-# Run from the repository root. Needs outputs of 02_align_count and 03_rRNA_qc.
+# Run from the repository root. Needs outputs of trim_star_featurecounts.sh (work/STAR_both/fC/)
+# and count_rRNA.sh (work/rRNA_qc/counts/), both in this folder.
 suppressMessages({ library(DESeq2); library(ggplot2); library(patchwork) })
 
 work <- Sys.getenv("WORK_DIR", file.path(getwd(), "work"))

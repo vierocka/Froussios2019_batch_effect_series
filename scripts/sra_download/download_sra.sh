@@ -1,6 +1,6 @@
 #!/bin/bash
 # Download the 17 runs of ERP021226 with sra-tools. Skips runs already done.
-# Usage: bash 00_download/download_sra.sh [RUN ...]   (default: all runs in data/run_list.tsv)
+# Usage: bash scripts/sra_download/download_sra.sh [RUN ...]   (default: all runs in data/run_list.tsv)
 set -euo pipefail
 source "$(dirname "$0")/../../config.sh"
 

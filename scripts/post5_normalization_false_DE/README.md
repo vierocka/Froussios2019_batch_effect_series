@@ -22,7 +22,8 @@ reconstruct the original rRNA count matrix.
   two decreased when the feature was ignored).
 - **One comparison stayed extreme under every treatment** (689 genes under median-of-ratios,
   503-615 under total-count scaling) — this reflects structure already present in the real
-  coding-gene data, not something the synthetic rRNA feature introduces.
+  coding-gene data, not something the synthetic rRNA feature introduces (see "Split 6" below and
+  post 6).
 
 ![false DE by normalization](false_DE_by_normalization.png)
 
@@ -62,6 +63,14 @@ with-rRNA and coding-only gene sets. The underlying table is written to
   shows how two normalisation strategies respond differently to a dominant feature being present
   or absent, under a synthetic, calibrated-to-published-percentages model.
 
+## Split 6: a different phenomenon
+Split 6 (replicates 1, 2, 3 vs. 4, 5, 6; replicate 7 unused) gives more than 500 DE genes under
+every treatment. Its group 2 holds the three highest-rRNA ExpA replicates (2.10%, 3.60%, 23.70%),
+group 1 three of the four lowest (1.26%, 1.58%, 1.90%), and the split also follows the replicate
+numbering, which may reflect processing order. The synthetic rRNA feature did not create this
+signal; it is already in the real gene counts. Post 6 (`scripts/post6_split_structure/`) asks
+where it comes from.
+
 ## What this means for QC
 - DESeq2's default normalisation is more robust to this specific kind of perturbation than
   total-count scaling — but that robustness does not immunize a design against an rRNA-rich
@@ -82,3 +91,9 @@ with-rRNA and coding-only gene sets. The underlying table is written to
 - As stated above: the persistently large comparison under both treatments shows structure already
   in the real coding-gene data. This analysis is not designed to, and does not, attribute that
   structure to uncounted rRNA specifically.
+
+## Next posts
+- Post 6 (`scripts/post6_split_structure/`): why does split 6 produce hundreds of DE genes even
+  when normalization is robust?
+- Post 7 (`scripts/post7_effect_size/`): does normalization merely move genes across the
+  `padj < 0.05` cutoff, or does it also change their estimated effect sizes (log2 fold changes)?

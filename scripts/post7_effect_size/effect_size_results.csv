@@ -1,0 +1,225 @@
+"split","normalisation","rRNA","rule","n"
+1,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",0
+1,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2208
+1,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",698
+1,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",3
+1,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",1
+1,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",0
+1,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+1,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",0
+1,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2208
+1,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",698
+1,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",3
+1,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",1
+1,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+1,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+1,"total-count scaling","included for size factors","padj < 0.05",0
+1,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2167
+1,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",715
+1,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",0
+1,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",0
+1,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",0
+1,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+1,"total-count scaling","ignored for size factors","padj < 0.05",0
+1,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2218
+1,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",814
+1,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",4
+1,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",1
+1,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+1,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+2,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",0
+2,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2374
+2,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",690
+2,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",3
+2,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",0
+2,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",0
+2,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+2,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",0
+2,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2374
+2,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",690
+2,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",3
+2,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",0
+2,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+2,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+2,"total-count scaling","included for size factors","padj < 0.05",0
+2,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2395
+2,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",691
+2,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",2
+2,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",0
+2,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",0
+2,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+2,"total-count scaling","ignored for size factors","padj < 0.05",0
+2,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2375
+2,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",791
+2,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",2
+2,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",0
+2,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+2,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+3,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",0
+3,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2194
+3,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",826
+3,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",3
+3,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",0
+3,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",0
+3,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+3,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",0
+3,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2194
+3,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",826
+3,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",3
+3,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",0
+3,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+3,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+3,"total-count scaling","included for size factors","padj < 0.05",0
+3,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2190
+3,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",818
+3,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",0
+3,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",0
+3,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",0
+3,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+3,"total-count scaling","ignored for size factors","padj < 0.05",0
+3,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2191
+3,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",825
+3,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",2
+3,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",0
+3,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+3,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+4,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",10
+4,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2098
+4,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",763
+4,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",11
+4,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",4
+4,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",7
+4,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+4,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",10
+4,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2098
+4,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",763
+4,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",11
+4,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",4
+4,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",7
+4,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+4,"total-count scaling","included for size factors","padj < 0.05",23
+4,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2345
+4,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",832
+4,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",18
+4,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",3
+4,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",14
+4,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+4,"total-count scaling","ignored for size factors","padj < 0.05",8
+4,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2093
+4,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",761
+4,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",13
+4,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",4
+4,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",6
+4,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+5,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",1
+5,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2171
+5,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",682
+5,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",2
+5,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",1
+5,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",1
+5,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+5,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",1
+5,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2171
+5,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",682
+5,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",2
+5,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",1
+5,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",1
+5,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+5,"total-count scaling","included for size factors","padj < 0.05",0
+5,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2177
+5,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",686
+5,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",1
+5,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",1
+5,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",0
+5,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+5,"total-count scaling","ignored for size factors","padj < 0.05",2
+5,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2198
+5,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",684
+5,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",2
+5,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",1
+5,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",1
+5,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+6,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",689
+6,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2448
+6,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",622
+6,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",102
+6,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",10
+6,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",140
+6,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",3
+6,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",689
+6,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2448
+6,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",622
+6,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",102
+6,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",10
+6,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",140
+6,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",3
+6,"total-count scaling","included for size factors","padj < 0.05",503
+6,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2494
+6,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",760
+6,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",80
+6,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",6
+6,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",119
+6,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",2
+6,"total-count scaling","ignored for size factors","padj < 0.05",615
+6,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2455
+6,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",645
+6,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",97
+6,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",8
+6,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",135
+6,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",3
+7,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",1
+7,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2161
+7,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",589
+7,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",4
+7,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",2
+7,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",1
+7,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+7,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",1
+7,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2161
+7,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",589
+7,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",4
+7,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",2
+7,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",1
+7,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+7,"total-count scaling","included for size factors","padj < 0.05",1
+7,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2177
+7,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",699
+7,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",3
+7,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",2
+7,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",1
+7,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+7,"total-count scaling","ignored for size factors","padj < 0.05",0
+7,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2166
+7,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",587
+7,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",4
+7,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",2
+7,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+7,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+8,"DESeq2 median-of-ratios","included for size factors","padj < 0.05",0
+8,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (raw)",2214
+8,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (raw)",796
+8,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 1 (shrunken)",1
+8,"DESeq2 median-of-ratios","included for size factors","|log2FC| > 2 (shrunken)",0
+8,"DESeq2 median-of-ratios","included for size factors","padj < 0.05 & |log2FC| > 1",0
+8,"DESeq2 median-of-ratios","included for size factors","test |log2FC| > 1, padj < 0.05",0
+8,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05",0
+8,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (raw)",2215
+8,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (raw)",796
+8,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 1 (shrunken)",1
+8,"DESeq2 median-of-ratios","ignored for size factors","|log2FC| > 2 (shrunken)",0
+8,"DESeq2 median-of-ratios","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+8,"DESeq2 median-of-ratios","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
+8,"total-count scaling","included for size factors","padj < 0.05",0
+8,"total-count scaling","included for size factors","|log2FC| > 1 (raw)",2190
+8,"total-count scaling","included for size factors","|log2FC| > 2 (raw)",694
+8,"total-count scaling","included for size factors","|log2FC| > 1 (shrunken)",2
+8,"total-count scaling","included for size factors","|log2FC| > 2 (shrunken)",1
+8,"total-count scaling","included for size factors","padj < 0.05 & |log2FC| > 1",0
+8,"total-count scaling","included for size factors","test |log2FC| > 1, padj < 0.05",0
+8,"total-count scaling","ignored for size factors","padj < 0.05",0
+8,"total-count scaling","ignored for size factors","|log2FC| > 1 (raw)",2205
+8,"total-count scaling","ignored for size factors","|log2FC| > 2 (raw)",790
+8,"total-count scaling","ignored for size factors","|log2FC| > 1 (shrunken)",1
+8,"total-count scaling","ignored for size factors","|log2FC| > 2 (shrunken)",0
+8,"total-count scaling","ignored for size factors","padj < 0.05 & |log2FC| > 1",0
+8,"total-count scaling","ignored for size factors","test |log2FC| > 1, padj < 0.05",0
