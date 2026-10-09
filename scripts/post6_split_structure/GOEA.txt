@@ -1,0 +1,41 @@
+Functional check of the 8 strongest split-6 genes (STRING network + InterPro enrichment)
+=======================================================================================
+
+WHERE THE 8 GENES COME FROM
+- Data: Froussios et al. 2019, ExpA, coding-gene counts (featureCounts -t gene, work/STAR_both/fC/).
+- Comparison: post 5's split 6 = replicates 1, 2, 3 (group 1) vs. replicates 4, 5, 6 (group 2);
+  same genotype, same batch, no designed difference; replicate 7 not used.
+- Method: DESeq2 (default median-of-ratios size factors, design ~group), Wald test;
+  log2FC shrunken with apeglm (lfcShrink, coef group_g2_vs_g1).
+- Selection rule (post 7): padj < 0.05 AND |shrunken log2FC| > 2 (more than 4-fold).
+  8 of split 6's 689 padj < 0.05 genes pass. log2FC > 0 = higher in replicates 4, 5, 6.
+
+GENES
+gene       STRING name   log2FC (shrunken)  padj     description (STRING)
+AT1G50040  F2J10.8        +2.39             1.7e-22  formin-like protein, putative (DUF1005)
+AT3G19680  Q9LJM6_ARATH   +2.48             3.0e-18  uncharacterized protein
+AT2G17230  EXL5           +2.16             2.3e-12  EXORDIUM-like 5; brassinosteroid-dependent growth regulation
+AT1G21910  ERF012         +2.10             6.2e-10  AP2/ERF transcription factor (ERF subfamily); abiotic stress
+AT5G43890  YUC5           +2.13             3.6e-08  YUCCA5, auxin biosynthesis
+AT4G15248  MIP1A (BBX30)  -2.49             9.5e-08  B-box protein; sequesters CONSTANS, long-day flowering pathway
+AT1G33760  ERF022         +2.30             2.2e-04  AP2/ERF transcription factor (ERF subfamily)
+AT1G35140  EXL1           +2.16             3.1e-04  EXORDIUM-like 1; growth under low carbon/energy availability
+
+STRING v12.5 (background: Arabidopsis thaliana genome)
+nodes 8, edges 6, average node degree 1.5,
+average local clustering coefficient 0.75, PPI enrichment p-value 7.31e-14
+
+InterPro domain enrichment
+IPR006766  Protein EXORDIUM-like                        2 of 8   strength 2.93  signal 1.18  FDR 0.0121
+IPR051032  AP2/ERF transcription factor, ERF subfamily  2 of 22  strength 2.49  signal 0.80  FDR 0.0493
+("2 of 8" = 2 genes from the list among the 8 genome genes with that domain; strength, signal and
+FDR as reported by STRING)
+
+READING
+The 8 genes are more connected than expected by chance (6 edges, PPI enrichment p = 7.31e-14)
+and point to
+carbon/energy status (EXL1, EXL5), auxin (YUC5), stress-responsive ERF transcription factors and
+photoperiod/light signalling (MIP1A/BBX30, the only gene lower in group 2). Consistent with, but not
+proof of, a harvest-time / light / energy-status difference following the replicate numbering
+(post 6). 8 genes is a very small list: treat as a lead; the full 689-gene list needs its own GO
+enrichment against the tested-gene background.

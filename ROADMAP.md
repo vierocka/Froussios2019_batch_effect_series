@@ -52,6 +52,7 @@ Froussios2019_batch_effect_series/
     │   ├── split_structure.R          split 6 DE, all 70 ExpA splits, PCA, leave-one-out/swaps; makes the figure
     │   ├── split6_DE_genes.csv        the 689 DE genes (padj < 0.05)
     │   ├── all_70_splits.csv          DE count and rRNA separation for every 3-vs-3 split of ExpA
+    │   ├── GOEA.txt                   STRING/InterPro check of the 8 strongest split-6 genes (padj & shrunken |log2FC| > 2)
     │   ├── split_structure.png        figure of the post
     │   └── README.md                  results, interpretation and limits
     │
@@ -103,7 +104,9 @@ The teaching arc:
 Short version: the 7 ExpA replicates carry a gradient that follows replicate numbering (PC1 64%),
 not rRNA; replacing rep 6 with rep 7 gives 1,389 DE genes, swapping rep 3 and rep 7 gives 5.
 Open follow-ups:
-- GO enrichment of the 689 genes (top genes ATHB-2, HAT1, ATHB4 suggest light / time of day).
+- GO enrichment of the 689 genes against the tested-gene background (top genes ATHB-2, HAT1,
+  ATHB4 suggest light / time of day; the 8 strongest genes form a STRING network of carbon/energy,
+  auxin, ERF and photoperiod genes, see `GOEA.txt`).
 - Sample metadata: ArrayExpress E-MTAB-5446 SDRF for harvest order, plate, extraction and library
   dates; if absent, ask the authors.
 - Does ExpB show the same kind of gradient (PCA of replicates 8-14)?

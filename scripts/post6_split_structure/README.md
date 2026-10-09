@@ -54,6 +54,12 @@ by direction. Panel B: rRNA % per replicate from the paper's Table S2C, bar = gr
   time of day. That suggests, **but does not show**, a difference in harvest time, plate position
   or light environment that follows the replicate numbering. The paper (section 2.1) gives the
   growth conditions but not harvest order or timing.
+- The 8 strongest genes (`padj < 0.05` and apeglm-shrunken `|log2FC| > 2`, the strictest rule of
+  post 7) form a connected STRING network (6 edges, PPI enrichment p = 7.3e-14) with
+  enriched EXORDIUM-like and ERF-subfamily domains: EXL1, EXL5 (carbon/energy status), YUC5 (auxin),
+  ERF012, ERF022, and MIP1A/BBX30 (photoperiod), the only one lower in replicates 4-6. This fits
+  the harvest-time / light / energy-status reading, but 8 genes are only a lead; details in
+  `GOEA.txt`.
 
 ## What this means for QC
 - "Same genotype, same batch" does not mean "no structure". Replicates can differ systematically
@@ -68,9 +74,9 @@ by direction. Panel B: rRNA % per replicate from the paper's Table S2C, bar = gr
 - One experiment (ExpA, 7 replicates), DESeq2 defaults, one threshold (`padj < 0.05`).
 - Gene counts were made unstranded (`featureCounts` default `-s 0`) although the libraries are
   stranded (paper section 2.1); post 11 tests `-s 0/1/2` and reruns this post on stranded counts.
-- The light/harvest-time reading is a hypothesis from a few known genes, not a tested result; it
-  needs a GO enrichment of the 689 genes and the sample metadata (ArrayExpress E-MTAB-5446 SDRF,
-  or the authors).
+- The light/harvest-time reading is a hypothesis from a few known genes and an 8-gene STRING
+  check (`GOEA.txt`), not a tested result; it needs a GO enrichment of the 689 genes and the
+  sample metadata (ArrayExpress E-MTAB-5446 SDRF, or the authors).
 - Replicate numbering is the paper's (`data/replicate_map.tsv`); whether it reflects processing
   order is not documented.
 
