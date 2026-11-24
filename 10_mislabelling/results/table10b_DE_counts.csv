@@ -1,0 +1,3 @@
+"grouping","group1","group2","DE_padj05","DE_padj05_lfc1","tested","mislabelled_DE_also_in_correct"
+"mislabelled (one sample swapped per group)","ExpA1, ExpA2, ExpB3","ExpA3, ExpB1, ExpB2",0,0,26865,0
+"correct (ExpA vs. ExpB)","ExpA1, ExpA2, ExpA3","ExpB1, ExpB2, ExpB3",9270,3401,25837,NA

@@ -1,0 +1,41 @@
+🔬 #TransparentScience | What is my RNA-seq series really about?
+
+Over the past few weeks, I have been exploring how apparently small analytical decisions can change what we see in RNA-seq data.
+
+The data come from Froussios et al. (2019, Bioinformatics): 17 biological replicates of the same Arabidopsis thaliana Col-0 genotype, generated across three experiments, all grown under the same nominal condition. Randomly constructed groups should therefore contain no designed biological difference.
+
+So far:
+▪️ rRNA content ranging from below 1% to over 30% remained almost invisible to genome-wide correlation.
+▪️ Omitting a dominant feature changed every gene’s calculated share without changing a single raw count.
+▪️ Total-count scaling changed DE calls when a dominant feature was added; DESeq2’s median-of-ratios did not.
+▪️ One arbitrary split aligned with structure already present in the gene counts.
+
+The labels had no designed biological meaning, yet DESeq2 detected hundreds of genes because the selected samples already differed in a way the design did not describe. The pipeline detects the contrast it was given. But it was not a contrast I designed. Where does the contrast come from?
+
+This is what the series is really about:
+
+★ QC is not simply a report generated before the “real” analysis. It is part of scientific decision-making. ★
+
+The same applies to statistical thresholds.
+padj < 0.05 is a useful decision rule—not a biological boundary.
+
+Effect size, sample structure, experimental metadata, and the model's assumptions still matter.
+
+Gold-standard workflows are valuable baselines, not universal ground truth. Their assumptions still have to match the dataset.
+
+The point is to keep asking:
+▪️ What information entered the analysis—and what was left out?
+▪️ Do the samples contain structure that the design does not describe?
+▪️ Do QC observations actually change our decisions?
+▪️ Would the conclusion survive another reasonable analytical choice?
+
+I am curious: when rRNA content, RNA degradation, or another QC metric looks unusual, does it change your pipeline—or does it mainly remain in the QC report?
+
+Code and full explanation: https://lnkd.in/em2ZUvD2
+
+🔜 Next post: Why does Split 6 produce hundreds of DE genes even when normalization is robust?
+After that: Does normalization merely move genes across the padj < 0.05 cutoff (or does it also change their ESTIMATED EFFECT SIZE)?
+
+#bioinformatics #RNAseq #qualitycontrol #DESeq2 #reproducibility
+
+🧪➡️💻 FROM BENCH TO DATA ANALYSIS

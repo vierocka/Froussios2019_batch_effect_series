@@ -1,0 +1,3 @@
+design,result
+DESeq2 ~ batch + condition,design matrix has 3 columns but rank 2: not estimable
+"ComBat-seq, batch with condition as covariate",Covariates c[T.B] are confounded with the batches. Please review your covariates before proceeding with batch effect correction.

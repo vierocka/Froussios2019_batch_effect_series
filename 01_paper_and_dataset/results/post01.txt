@@ -1,0 +1,25 @@
+🔬 #TransparentScience | Proper QC can uncover hidden treasures.
+
+I’m back to one of my favourite topics: batch effects.
+
+This time I went back to a 2019 Bioinformatics paper that asked a deceptively simple question: 
+How well do RNA-seq differential-expression tools control false positives in a complex eukaryote?
+
+It is an unusually attractive benchmarking dataset: 17 biological replicates of the same Arabidopsis thaliana Col-0 genotype, generated in three experiments.
+
+But while reprocessing the raw reads, several details caught my attention:
+● The authors state that ERCC spike-ins were added to every sample and could verify comparability across experiments. I have not yet been able to locate the corresponding ERCC analysis in the deposited material.
+● They excluded replicate 11 because its genome-wide expression correlation was substantially poorer than that of the other samples. Yet the supplementary QC shows substantial rRNA contamination elsewhere too—including replicate 6, which remained in the analysis.
+● No pre-alignment read trimming/filtering is described. 
+
+For differential-expression benchmarking, raw counts were passed to each tool and each tool applied its own default normalization; for the distribution analysis, libraries were instead randomly downsampled to equal depth.
+
+None of these observations alone proves that the conclusions of the paper are wrong. They illustrate something more general: “high-quality RNA-seq dataset” is not a single property. Different QC problems can survive different filters, and apparently excellent global correlations do not guarantee the absence of systematic structure.
+
+And there is one sentence in the paper that I particularly like:
+☆ same lab, same machine, same people, same sequencing facility. ☆
+Is that evidence that there was no batch effect? Really?!
+
+Next post: what happens when we actually test it.
+
+#batcheffects #QC #qualitycontrol #rnaseq #bioinformatics

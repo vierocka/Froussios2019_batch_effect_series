@@ -1,0 +1,21 @@
+The Froussios et al. study was specifically designed as a same-condition RNA-seq benchmark, not as a treatment-versus-control experiment.
+Arabidopsis thaliana is the reference species of plant biology. Its genome is small: only 5 chromosomes, about 120 Mb in total (TAIR10). Yet its transcriptome and proteome are complex: about 27,600 protein-coding genes give rise to more than 48,000 annotated transcripts.
+With no designed biological difference, this dataset exposes the variation that interferes and covaries with real biology: batch effects between the three experiments, differences in rRNA content, possible RNA degradation, and natural biological variability between plants, which shows up as overdispersion in the counts.
+Experimental design
+- Organism: Arabidopsis thaliana Col-0, all wild type.
+- 17 biological replicates produced in three separate experimental runs:
+  - ExpA: replicates 1–7
+  - ExpB: replicates 8–14
+  - ExpC: replicates 15–17
+- Seeds were grown aseptically on MS10 plates.
+- Stratified for two days at 4°C.
+- Grown for another 14 days at 21°C under a 16-hour light/8-hour dark cycle.
+- Seedlings were then harvested for total RNA extraction.
+- ERCC spike-ins were added.
+- Libraries were prepared with Illumina TruSeq Stranded Total RNA with Ribo-Zero Plant.
+- Sequencing used 100-bp paired-end reads on a HiSeq 2000.
+The researchers used these same-condition replicates to:
+1. Test which statistical distribution best describes gene counts.
+2. Assess false-positive control in nine differential-expression tools.
+3. Construct artificial comparisons between groups of biological replicates for which no biological difference was designed.
+Replicate 11 was later excluded because it correlated poorly with the other samples.

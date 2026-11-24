@@ -1,0 +1,3 @@
+model,DE_padj05,DE_padj05_lfc1
+batch ignored (~ condition),10613,2684
+"batch removed (ComBat-seq, then ~ condition)",14,14

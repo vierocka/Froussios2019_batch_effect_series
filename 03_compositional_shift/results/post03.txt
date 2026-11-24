@@ -1,0 +1,36 @@
+🔬 #TransparentScience |  How can 30% of a library almost disappear from correlation?
+
+In the previous post, rRNA accounted for 1.3% to 31.2% of reads across biological replicates — yet their genome-wide rlog correlations remained remarkably similar.
+
+How can such a large difference become almost invisible?
+
+I tested the principle with a simple simulation.
+I generated two samples containing 10,000 genes on a log2 scale, with an initial correlation of r = 0.894. I then selected only 10 genes — 0.1% of the matrix — and substantially changed them.
+
+📊 Panel A shows one example: the 10 blue genes were moved to the top of the expression range.
+📊 Panel B repeats the experiment 1,000 times under two scenarios:
+● The 10 genes contribute approximately 1% of the total signal:
+r = 0.891–0.894
+● The 10 genes contribute 30% of the total signal:
+r = 0.888–0.893
+
+Even when only 10 genes collectively account for 30% of the linear-scale signal, the correlation changes surprisingly little.
+
+Why?
+Correlation shows 10 changed points out of 10,000. It does not know that those 10 genes account for almost one-third of the library.
+The remaining 9,990 genes dominate the genome-wide relationship. 
+And if they are all reduced by the same proportional factor, this becomes an approximately constant shift on the log2 scale—which correlation largely ignores.
+
+★ Correlation measures similarity of expression patterns. It does not measure similarity of library composition. ★
+
+This does not make correlation a poor QC metric. It means that even an excellent correlation answers only a specific question.
+
+The simulation and complete reprocessing workflow are available here:
+https://lnkd.in/eMFWQ7aB
+
+Next: those 30% of reads must come from somewhere. I will look more closely at the resulting compositional shift and its effects on the remaining genes.
+
+#TransparentScience #RNAseq #bioinformatics #qualitycontrol #rRNA #batcheffects #datasimulation #teaching_examples #compbio
+
+🧪➡️💻 FROM BENCH TO DATA ANALYSIS  🤠 
+Would you like to see more explanations like this?

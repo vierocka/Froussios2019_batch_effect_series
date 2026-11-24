@@ -1,0 +1,3 @@
+"design","result"
+"DESeq2 ~ batch + condition","the model matrix is not full rank, so the model cannot be fit as specified. One or more variables or interaction terms in the design formula are linear combinations of the others and must be removed. Please read the vignette section 'Model matrix not full rank': vignette('DESeq2')"
+"ComBat-seq, batch with condition as covariate","The covariate is confounded with batch! Remove the covariate and rerun ComBat-Seq"

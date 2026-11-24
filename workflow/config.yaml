@@ -1,0 +1,6 @@
+# Settings for workflow/Snakefile (paths relative to the repository root)
+pipeline_dir: pipeline_data
+replicate_map: data/replicate_map.tsv
+adapters: TruSeq3-PE.fa            # path to Trimmomatic's TruSeq3-PE.fa
+tin_experiments: [ExpA, ExpB]      # TIN for these experiments (topic 08 uses ExpA; topics 09 and 10 also ExpB)
+strandedness: false                # true: also count -s 0/1/2 and fragment counts (open issue, see 00e)

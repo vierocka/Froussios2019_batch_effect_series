@@ -1,0 +1,7 @@
+"id","label","run","paper_replicate","paper_experiment","TIN","mislabelled_group","correct_group"
+"ExpA1","ExpA1 (r3)","ERR1811895",3,"ExpA",84.6929473561439,"group 1","group 1"
+"ExpA2","ExpA2 (r5)","ERR1811897",5,"ExpA",84.4762982700922,"group 1","group 1"
+"ExpA3","ExpA3 (r7)","ERR1811899",7,"ExpA",84.4170200840331,"group 2","group 1"
+"ExpB1","ExpB1 (r12)","ERR1811892",12,"ExpB",85.337141088087,"group 2","group 2"
+"ExpB2","ExpB2 (r9)","ERR1811889",9,"ExpB",85.3347332831561,"group 2","group 2"
+"ExpB3","ExpB3 (r8)","ERR1811888",8,"ExpB",85.280261161684,"group 1","group 2"

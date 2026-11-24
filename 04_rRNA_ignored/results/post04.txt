@@ -1,0 +1,39 @@
+🔬 #TransparentScience | Can expression increase without gaining a single read?
+
+In the previous post, I showed that a few highly abundant features can account for a substantial portion of a sequencing library while barely changing genome-wide correlations.
+
+Now consider what happens when those features never enter the count matrix.
+
+In replicate 11, the original paper reported that 31.21% of all reads came from rRNA. But the coding-gene count matrix does not contain that rRNA component. The coding-gene counts themselves remain unchanged.
+
+What changes is the denominator against which their relative abundance is interpreted.
+Imagine that one gene represents 1% of the complete library.
+If the 31% rRNA component is omitted, the remaining 69% is treated as the new total. The same gene now represents approximately 1.45% of that smaller total.
+It did not gain a single read.
+Its calculated share simply increased by 45%.
+
+📊 The figure shows this across all detected coding genes.
+
+The blue curve includes a synthetic rRNA component calibrated to the paper’s reported 31% value. The orange curve uses only the coding-gene total.
+
+The shape of the distribution remains the same. Every coding gene moves by the same amount: approximately 0.54 on the log2 scale.
+
+★ Nothing in the orange curve is biologically upregulated. The denominator became smaller. ★
+
+This is a basic property of compositional data: every measured share depends on what else is included in—or excluded from—the total.
+
+Within one sample, the change is uniform. Across samples, however, the shift can differ because their rRNA fractions differ. A sample with 1% rRNA and a sample with 31% rRNA therefore do not experience the same rescaling when rRNA is absent from the count matrix.
+
+This figure is a sensitivity analysis, not a reconstruction of the real rRNA count matrix. I used the paper’s published rRNA percentage.
+
+Why does this matter?
+Some normalization methods depend directly on the total number of counted reads. Others, such as DESeq2’s median-of-ratios approach, estimate what happened to the typical gene and should be much less sensitive to one dominant omitted feature.
+
+Next post: Does that difference actually change the number of differential-expression calls?
+
+Code and the full explanation are available here:
+https://lnkd.in/eMFWQ7aB
+
+#TransparentScience #RNAseq #bioinformatics #normalization #compositionaldata #rRNA #qualitycontrol
+
+🧪➡️💻 FROM BENCH TO DATA ANALYSIS

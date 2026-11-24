@@ -1,0 +1,16 @@
+"x","y","type","r"
+"ExpA1","ExpA2","within ExpA",0.988732851726975
+"ExpA1","ExpA3","within ExpA",0.985806015381688
+"ExpA2","ExpA3","within ExpA",0.989549441964003
+"ExpB1","ExpB2","within ExpB",0.981418262169703
+"ExpB1","ExpB3","within ExpB",0.981735297590108
+"ExpB2","ExpB3","within ExpB",0.988834612582194
+"ExpA1","ExpB1","ExpA vs. ExpB",0.958210998380626
+"ExpA1","ExpB2","ExpA vs. ExpB",0.964161560583599
+"ExpA1","ExpB3","ExpA vs. ExpB",0.955151984719835
+"ExpA2","ExpB1","ExpA vs. ExpB",0.962337430903461
+"ExpA2","ExpB2","ExpA vs. ExpB",0.965908430621772
+"ExpA2","ExpB3","ExpA vs. ExpB",0.953999978183677
+"ExpA3","ExpB1","ExpA vs. ExpB",0.959446726771321
+"ExpA3","ExpB2","ExpA vs. ExpB",0.964225303801413
+"ExpA3","ExpB3","ExpA vs. ExpB",0.949810257317166

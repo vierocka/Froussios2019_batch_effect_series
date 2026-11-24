@@ -1,0 +1,66 @@
+# Subway map of workflow/Snakefile; draw with: slitherflow render workflow/subway_map.yaml -o workflow/subway_map.svg --png
+title: "Froussios 2019 batch-effect series: count-data preparation"
+subtitle: "workflow/Snakefile  ·  17 replicates  ·  Snakemake"
+input: {label: "ENA ERP021226", sublabel: "17 paired-end runs", file: "SRA"}
+
+trunk:
+  stations:
+    - {name: "Download", tool: "sra-tools", outputs: [{file: "FASTQ", label: ""}]}
+  lines: [rrna, genes]
+
+lines:
+  reference:
+    name: "Reference"
+    color: "#56B4E9"
+    row: -2
+    from: input
+    stations:
+      - {name: "TAIR10 genome + GFF3", tool: "Ensembl Plants 63"}
+      - {name: "STAR indices", tool: "STAR"}
+      - {name: "BED12", tool: "gffread"}
+  rrna:
+    name: "rRNA counts (topic 02)"
+    color: "#D55E00"
+    row: -1
+    to: terminus
+    stations:
+      - {name: "Mapping, paper settings", tool: "STAR, raw reads"}
+      - {name: "rRNA loci", tool: "featureCounts -s 2", outputs: [{file: "TSV", label: "rRNA counts"}]}
+  genes:
+    name: "Gene counts (topics 02-10)"
+    color: "#009E73"
+    row: 0
+    to: terminus
+    stations:
+      - {name: "Trimming", tool: "Trimmomatic"}
+      - {name: "Mapping, pairs", tool: "STAR", gap: 150}
+      - {name: "Gene counts", tool: "featureCounts -s 0", outputs: [{file: "TSV", label: "gene counts"}]}
+  singletons:
+    name: "Singletons (topic 08)"
+    color: "#E69F00"
+    row: 2.3
+    from: {line: genes, station: "Trimming"}
+    to: terminus
+    stations:
+      - {name: "Mapping, forward-only and reverse-only", tool: "STAR"}
+      - {name: "Singleton counts", tool: "STAR Log.final.out"}
+  tin:
+    name: "Transcript integrity (topics 08-10)"
+    color: "#CC79A7"
+    row: 1.4
+    from: {line: genes, station: "Mapping, pairs"}
+    to: terminus
+    stations:
+      - {name: "BAM index", tool: "samtools"}
+      - {name: "TIN", tool: "RSeQC tin.py", outputs: [{file: "CSV", label: "TIN per sample"}]}
+  strandedness:
+    name: "Strandedness check (00e, 00f)"
+    color: "#999999"
+    optional: true
+    row: 0.65
+    from: {line: genes, station: "Mapping, pairs"}
+    stations:
+      - {name: "Recount", tool: "featureCounts -s 0/1/2"}
+
+terminus: {name: "Analysis topics 02-10", sublabel: "R and Python, run independently", row: 0, file: "PNG"}
+footnote: "The reference feeds every mapping step (STAR indices) and TIN (BED12). Run on a cluster: snakemake -s workflow/Snakefile --configfile workflow/config.yaml --cores 8. Dashed: optional (strandedness: true)."

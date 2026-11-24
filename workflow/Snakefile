@@ -1,0 +1,194 @@
+# Count-data preparation (HPC part): download -> reference -> trimming -> mapping -> counting -> TIN.
+# Same steps and settings as 00_preprocessing/scripts/00a-00e and 08_hidden_degradation/scripts/08a.
+# Run from the repository root:
+#   snakemake -s workflow/Snakefile --configfile workflow/config.yaml --cores 8 [--executor slurm]
+import csv
+
+PDIR = config.get("pipeline_dir", "pipeline_data")
+REF = f"{PDIR}/ref"
+GENOME = f"{REF}/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa"
+GFF3 = f"{REF}/Arabidopsis_thaliana.TAIR10.63.gff3"
+ENSEMBL = "https://ftp.ebi.ac.uk/ensemblgenomes/pub/plants/release-63"
+
+with open(config.get("replicate_map", "data/replicate_map.tsv")) as fh:
+    REPS = list(csv.DictReader(fh, delimiter="\t"))
+RUNS = [r["run"] for r in REPS]
+TIN_RUNS = [r["run"] for r in REPS if r["paper_experiment"] in config.get("tin_experiments", ["ExpA"])]
+STRANDED = {"fC_s0": "-s 0", "fC_s1": "-s 1", "fC_s2": "-s 2", "fC_s2_pairs": "-s 2 --countReadPairs"}
+STAR_OPTS = ("--outFilterType BySJout --outFilterMultimapNmax 10 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 "
+             "--outFilterMismatchNmax 12 --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 "
+             "--outSAMtype BAM SortedByCoordinate --limitBAMsortRAM 12000000000 --outBAMsortingBinsN 20 "
+             "--readFilesCommand gunzip -c")
+
+
+rule all:
+    input:
+        expand(f"{PDIR}/STAR_both/fC/{{run}}.count", run=RUNS),
+        expand(f"{PDIR}/STAR_{{s}}/fC/{{run}}.count", s=["Fonly", "Ronly"], run=RUNS),
+        expand(f"{PDIR}/rRNA_qc/counts/{{run}}_rRNA.count", run=RUNS),
+        f"{PDIR}/TIN/TIN_summary.csv",
+        expand(f"{PDIR}/STAR_both/{{v}}/{{run}}.count", v=STRANDED, run=RUNS) if config.get("strandedness") else []
+
+
+# ---- input ------------------------------------------------------------------------------------------------
+rule download:
+    output:
+        r1 = f"{PDIR}/fastq/{{run}}_1.fastq.gz",
+        r2 = f"{PDIR}/fastq/{{run}}_2.fastq.gz"
+    params: tmp = f"{PDIR}/sra_tmp"
+    threads: 4
+    shell:
+        """
+        prefetch --max-size 100G -O {params.tmp} {wildcards.run}
+        fasterq-dump --split-files --threads {threads} -O {params.tmp} -t {params.tmp} {params.tmp}/{wildcards.run}
+        [ $(wc -l < {params.tmp}/{wildcards.run}_1.fastq) -eq $(wc -l < {params.tmp}/{wildcards.run}_2.fastq) ]
+        gzip -c {params.tmp}/{wildcards.run}_1.fastq > {output.r1}
+        gzip -c {params.tmp}/{wildcards.run}_2.fastq > {output.r2}
+        rm -rf {params.tmp}/{wildcards.run} {params.tmp}/{wildcards.run}_[12].fastq
+        """
+
+
+# ---- reference --------------------------------------------------------------------------------------------
+rule genome:
+    output: GENOME
+    shell: "curl -sS {ENSEMBL}/fasta/arabidopsis_thaliana/dna/Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz | gunzip -c > {output}"
+
+rule annotation:
+    output: GFF3
+    shell: "curl -sS {ENSEMBL}/gff3/arabidopsis_thaliana/Arabidopsis_thaliana.TAIR10.63.gff3.gz | gunzip -c > {output}"
+
+rule star_index:
+    input: fa = GENOME, gff = GFF3
+    output: directory(f"{REF}/STAR_index_TAIR10")
+    threads: 8
+    shell:
+        """
+        STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir {output} --genomeFastaFiles {input.fa} \
+             --sjdbGTFfile {input.gff} --sjdbGTFtagExonParentTranscript Parent --sjdbGTFfeatureExon exon \
+             --sjdbOverhang 100 --genomeSAindexNbases 12
+        """
+
+rule star_index_paper:
+    input: fa = GENOME, gff = GFF3
+    output: directory(f"{REF}/STAR_index_TAIR10_sjdb99")
+    threads: 8
+    shell:
+        """
+        STAR --runThreadN {threads} --runMode genomeGenerate --genomeDir {output} --genomeFastaFiles {input.fa} \
+             --sjdbGTFfile {input.gff} --sjdbOverhang 99 --genomeSAindexNbases 12
+        """
+
+rule rrna_annotation:
+    input: GFF3
+    output: f"{REF}/Arabidopsis_thaliana.TAIR10.63.rRNA_only.gff3"
+    shell: "grep ribos {input} | grep ncRNA_gene > {output}"     # rRNA loci are typed ncRNA_gene
+
+rule bed12:
+    input: GFF3
+    output: f"{REF}/Arabidopsis_thaliana.TAIR10.63.bed12"
+    shell: "gffread {input} --bed -o {output}"
+
+
+# ---- trimming and mapping ---------------------------------------------------------------------------------
+rule trimmomatic:
+    input: r1 = rules.download.output.r1, r2 = rules.download.output.r2
+    output:
+        p1 = f"{PDIR}/trimmomatic/{{run}}_1P.fq.gz", u1 = f"{PDIR}/trimmomatic/{{run}}_1U.fq.gz",
+        p2 = f"{PDIR}/trimmomatic/{{run}}_2P.fq.gz", u2 = f"{PDIR}/trimmomatic/{{run}}_2U.fq.gz",
+        summary = f"{PDIR}/trimmomatic/{{run}}_summary.txt"
+    params: adapters = config["adapters"]
+    threads: 8
+    shell:
+        """
+        trimmomatic PE -threads {threads} -summary {output.summary} -quiet -validatePairs {input.r1} {input.r2} \
+            {output.p1} {output.u1} {output.p2} {output.u2} \
+            ILLUMINACLIP:{params.adapters}:2:28:8 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:36
+        """
+
+rule star_pairs:
+    input: p1 = rules.trimmomatic.output.p1, p2 = rules.trimmomatic.output.p2, index = rules.star_index.output
+    output:
+        bam = f"{PDIR}/STAR_both/{{run}}_Aligned.sortedByCoord.out.bam",
+        log = f"{PDIR}/STAR_both/{{run}}_Log.final.out"
+    params: prefix = f"{PDIR}/STAR_both/{{run}}_"
+    threads: 8
+    shell: "STAR --runThreadN {threads} --genomeDir {input.index} {STAR_OPTS} --outFileNamePrefix {params.prefix} --readFilesIn {input.p1} {input.p2}"
+
+rule star_singletons:
+    input:
+        reads = lambda w: f"{PDIR}/trimmomatic/{w.run}_{'1' if w.mate == 'Fonly' else '2'}U.fq.gz",
+        index = rules.star_index.output
+    output:
+        bam = f"{PDIR}/STAR_{{mate}}/{{run}}_Aligned.sortedByCoord.out.bam",
+        log = f"{PDIR}/STAR_{{mate}}/{{run}}_Log.final.out"
+    wildcard_constraints: mate = "Fonly|Ronly"
+    params: prefix = f"{PDIR}/STAR_{{mate}}/{{run}}_"
+    threads: 8
+    shell: "STAR --runThreadN {threads} --genomeDir {input.index} {STAR_OPTS} --outFileNamePrefix {params.prefix} --readFilesIn {input.reads}"
+
+rule star_raw_paper:
+    input: r1 = rules.download.output.r1, r2 = rules.download.output.r2, index = rules.star_index_paper.output
+    output: f"{PDIR}/rRNA_qc/STAR_raw/{{run}}_Aligned.sortedByCoord.out.bam"
+    params: prefix = f"{PDIR}/rRNA_qc/STAR_raw/{{run}}_"
+    threads: 8
+    shell:
+        """
+        STAR --runThreadN {threads} --genomeDir {input.index} --outSAMstrandField intronMotif \
+             --outSJfilterIntronMaxVsReadN 5000 10000 15000 20000 --outFilterType BySJout --outFilterMultimapNmax 2 \
+             --outFilterMismatchNmax 5 --outFileNamePrefix {params.prefix} --outSAMtype BAM SortedByCoordinate \
+             --limitBAMsortRAM 100000000000 --readFilesCommand gunzip -c --readFilesIn {input.r1} {input.r2}
+        """
+
+
+# ---- counting ---------------------------------------------------------------------------------------------
+rule featurecounts_pairs:
+    input: bam = rules.star_pairs.output.bam, gff = GFF3
+    output: f"{PDIR}/STAR_both/fC/{{run}}.count"
+    threads: 4
+    shell: "featureCounts -T {threads} -p -a {input.gff} -t gene -g gene_id -o {output} {input.bam}"
+
+rule featurecounts_singletons:
+    input: bam = rules.star_singletons.output.bam, gff = GFF3
+    output: f"{PDIR}/STAR_{{mate}}/fC/{{run}}.count"
+    wildcard_constraints: mate = "Fonly|Ronly"
+    threads: 4
+    shell: "featureCounts -T {threads} -a {input.gff} -t gene -g gene_id -o {output} {input.bam}"
+
+rule count_rrna:
+    input: bam = rules.star_raw_paper.output, gff = rules.rrna_annotation.output
+    output: f"{PDIR}/rRNA_qc/counts/{{run}}_rRNA.count"
+    threads: 4
+    shell: "featureCounts -T {threads} -t ncRNA_gene -g gene_id -s 2 -p -P -B -a {input.gff} -o {output} {input.bam}"
+
+rule featurecounts_strandedness:          # optional: config strandedness: true
+    input: bam = rules.star_pairs.output.bam, gff = GFF3
+    output: f"{PDIR}/STAR_both/{{variant}}/{{run}}.count"
+    wildcard_constraints: variant = "fC_s0|fC_s1|fC_s2|fC_s2_pairs"
+    params: opts = lambda w: STRANDED[w.variant]
+    threads: 4
+    shell: "featureCounts -T {threads} -p {params.opts} -a {input.gff} -t gene -g gene_id -o {output} {input.bam}"
+
+
+# ---- transcript integrity ---------------------------------------------------------------------------------
+rule index_bam:
+    input: rules.star_pairs.output.bam
+    output: f"{PDIR}/STAR_both/{{run}}_Aligned.sortedByCoord.out.bam.bai"
+    threads: 4
+    shell: "samtools index -@ {threads} {input}"
+
+rule tin:
+    input: bam = rules.star_pairs.output.bam, bai = rules.index_bam.output, bed = rules.bed12.output
+    output:
+        summary = f"{PDIR}/TIN/{{run}}_Aligned.sortedByCoord.out.summary.txt",
+        xls = f"{PDIR}/TIN/{{run}}_Aligned.sortedByCoord.out.tin.xls"
+    shell: "cd {PDIR}/TIN && tin.py -i $(realpath {input.bam}) -r $(realpath {input.bed})"   # writes to the working directory
+
+rule tin_summary:
+    input: expand(f"{PDIR}/TIN/{{run}}_Aligned.sortedByCoord.out.summary.txt", run=TIN_RUNS)
+    output: f"{PDIR}/TIN/TIN_summary.csv"
+    run:
+        with open(output[0], "w") as out:
+            out.write("run,TIN_mean,TIN_median,TIN_stdev\n")
+            for run_id, f in zip(TIN_RUNS, input):
+                vals = open(f).read().splitlines()[1].split("\t")
+                out.write(f"{run_id},{vals[1]},{vals[2]},{vals[3]}\n")
